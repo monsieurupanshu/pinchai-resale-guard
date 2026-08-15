@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+venv/
+.venv/
+*.egg-info/
+.DS_Store
+
+# Model artifacts (regenerable via scripts, keep repo lean)
+*.pkl
+*.joblib
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Env
+.env
