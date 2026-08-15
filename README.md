@@ -9,7 +9,7 @@ PinchAI's post-purchase buyer-intent thesis one step earlier, to checkout.
 
 ## Status
 - [x] Phase 1 — Synthetic data generation (6 customer archetypes)
-- [ ] Phase 2 — Feature engineering
+- [x] Phase 2 — Feature engineering
 - [ ] Phase 3 — Detection model (LightGBM)
 - [ ] Phase 4 — Policy engine
 - [ ] Phase 5 — Dashboard (Streamlit)
