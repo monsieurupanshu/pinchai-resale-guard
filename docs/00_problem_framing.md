@@ -32,7 +32,7 @@ Defined before building, not retrofitted after:
   `shared_address_legit` (which looks identical to a ring on the network
   signal alone) and not missing `stealth_reseller` (which looks identical to
   a loyal buyer on quantity and timing alone).
-- A policy layer producing an actionable, explainable decision — not just a
+- A policy layer producing an actionable, explainable decision not just a
   raw probability.
 - A design doc that shows the reasoning, not just the artifact.
 
@@ -65,7 +65,7 @@ Defined before building, not retrofitted after:
 
 Everything downstream assumes the 6-archetype synthetic data is a fair proxy
 for real buyer behavior. That's a reasonable assumption for a self-directed
-take-home — real transactional data isn't available — but it's worth stating
+take-home — real transactional data isn't available but it's worth stating
 explicitly as a limitation rather than treating the synthetic data as ground
 truth about the real world. The archetypes were designed adversarially
 against each other (see below) specifically to avoid the trap of a model
