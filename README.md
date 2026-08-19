@@ -1,3 +1,4 @@
+
 # Resale-Guard
 
 **Checkout-time detection of discount-arbitrage resellers** — extending PinchAI's
