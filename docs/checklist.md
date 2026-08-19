@@ -18,6 +18,16 @@ product surface and built the missing piece."
 statement, why-PinchAI rationale, success criteria (hard pairs matter more
 than easy ones), in/out-of-scope table, archetype rationale table.
 
+**Checklist (all complete):**
+- [x] Problem statement written in plain terms (Section 1)
+- [x] Why-PinchAI-fit rationale written (Section 2)
+- [x] Success criteria defined before any code was written (Section 3)
+- [x] Explicit in-scope vs out-of-scope list (Section 4)
+- [x] Core assumption named honestly — synthetic data as a proxy, not
+      ground truth (Section 5)
+- [x] Saved as `docs/00_problem_framing.md`
+- [x] Reflected in `README.md` status tracker and problem section
+
 **Artifacts produced:** `docs/00_problem_framing.md`, `README.md`
 
 ---
