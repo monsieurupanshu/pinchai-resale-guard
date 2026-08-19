@@ -9,28 +9,27 @@ post-purchase buyer-intent thesis one step earlier, to the moment of purchase.
 ## The Problem
 
 Retailers running time-boxed discount promotions (flash sales, seasonal
-clearance) lose margin to buyers who purchase in bulk — not for personal use,
+clearance) lose margin to buyers who purchase in bulk, not for personal use,
 but to resell at a markup on secondary platforms shortly after. This behavior
 is invisible to traditional fraud systems because **no rule is technically
 broken**: it's a legitimate purchase, correctly paid for, correctly
-delivered. The harm is economic — margin erosion, distorted "sold out"
-signals, and unfair inventory access for genuine customers — not
+delivered. The harm is economic margin erosion, distorted "sold out"
+signals, and unfair inventory access for genuine customers, not
 transactional.
 
 ## Why This Problem (and why it extends PinchAI's thesis)
 
 PinchAI's product connects signals across checkout, return initiation, and
-warehouse operations to form a single view of buyer intent — but that lens is
+warehouse operations to form a single view of buyer intent but that lens is
 currently anchored at *returns*. The bet this project makes: **the same
 buyer-intent lens, applied one step earlier at checkout, catches a class of
 abuse a returns-focused system structurally cannot see**, because the item
-in question is never returned. This isn't a generic fraud model — it's a
+in question is never returned. This isn't a generic fraud model, it's a
 proposed extension to a gap in an existing product surface.
 
 ## What Success Looks Like
 
-The easy cases (obvious bulk resellers) are table stakes. The real test —
-and the reason the synthetic data includes deliberately hard pairs — is:
+The easy cases (obvious bulk resellers) are table stakes. The real test and the reason the synthetic data includes deliberately hard pairs — is:
 
 - **Not flagging legitimate bulk/shared-identity customers** (a loyal
   repeat buyer, a household sharing one shipping address)
@@ -89,9 +88,9 @@ data/           generated CSVs (not versioned — regenerate via scripts)
 
 ## A Note on Scope
 
-This is a self-directed project, not an official PinchAI assignment — built
-after a March 2026 interview to explore a problem we discussed together, and
+This is a self-directed project, not an official PinchAI assignment, built 
+to explore a problem we discussed together, and
 to demonstrate how I approach ambiguous, product-shaped ML problems
 end-to-end. Explicit out-of-scope items (cross-retailer identity resolution,
 adversarial evasion, live drift monitoring, privacy/compliance architecture)
-are documented rather than silently skipped — see `docs/00_problem_framing.md`.
+are documented rather than skipped — see `docs/00_problem_framing.md`.
