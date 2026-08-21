@@ -1,0 +1,16 @@
+total_quantity
+n_orders
+avg_qty_per_order
+max_qty_single_order
+n_distinct_skus
+sku_concentration
+pct_orders_discount_window
+avg_discount_pct_when_used
+purchase_span_days
+order_frequency_per_week
+total_spend
+account_age_at_first_order_days
+shared_device_count
+shared_payment_count
+shared_address_count
+identity_cluster_size
