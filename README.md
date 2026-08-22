@@ -60,8 +60,8 @@ scoping discussion, including explicit in/out-of-scope decisions.
 - [x] Phase 0 — Problem framing
 - [x] Phase 1 — Synthetic data generation (6 customer archetypes)
 - [x] Phase 2 — Feature engineering
-- [ ] Phase 3 — Detection model (LightGBM)
-- [ ] Phase 4 — Policy engine
+- [x] Phase 3 — Detection model (LightGBM)
+- [x] Phase 4 — Policy engine
 - [ ] Phase 5 — Dashboard (Streamlit)
 - [ ] Phase 6 — Final docs + polish
 
