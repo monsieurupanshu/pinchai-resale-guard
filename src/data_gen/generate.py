@@ -80,6 +80,9 @@ def _rand_ts(start: datetime, end: datetime) -> datetime:
 def _new_id(prefix: str) -> str:
     return f"{prefix}-{uuid.uuid4().hex[:10]}"
 
+def _new_ip():
+    return f"{random.randint(1,223)}.{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(1,254)}"
+
 
 # ---------------------------------------------------------------------------
 # Customer archetype generators
@@ -95,7 +98,8 @@ class Customer:
     segment: str  # normal | loyal_bulk | solo_reseller | ring_reseller
     ring_id: str = ""  # non-empty only for ring_reseller members
     ring_style: str = ""  # "aggressive" or "stealth" — only for ring_reseller
-
+    home_ip: str = ""
+    uses_vpn: bool = False
 
 def gen_normal_shoppers(n: int) -> list:
     customers = []
