@@ -58,6 +58,9 @@ def generate_trust_signals(row: pd.Series) -> list:
 
     if row.get("identity_cluster_size", 1) == 1:
         signals.append("No shared identity signals with any other account")
+        
+    if row.get("n_distinct_ips", 1) <= 1:
+        signals.append("Consistent IP address across all orders")
 
     if row.get("pct_orders_discount_window", 0) == 0:
         signals.append("Purchases not concentrated around discount events")
@@ -97,7 +100,9 @@ def _generate_narrative_llm(row: pd.Series, decision: dict, api_key: str) -> str
         f"% orders during discount windows: {row.get('pct_orders_discount_window', 0):.0%}, "
         f"SKU concentration: {row.get('sku_concentration', 0):.2f}, "
         f"account age at first order: {row.get('account_age_at_first_order_days', 0):.0f} days, "
-        f"identity cluster size (accounts sharing device/payment/address): {int(row.get('identity_cluster_size', 1))}. "
+        f"identity cluster size (accounts sharing device/payment/address): {int(row.get('identity_cluster_size', 1))}, "
+        f"distinct IP addresses used: {int(row.get('n_distinct_ips', 1))}, "
+        f"shared home IP with other accounts: {int(row.get('shared_ip_count', 0))}. "
         f"Reason codes: {'; '.join(decision['reasons'])}."
     )
 
