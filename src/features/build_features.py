@@ -93,11 +93,11 @@ def build_network_features(customers: pd.DataFrame) -> pd.DataFrame:
     customers["shared_device_count"] = _sharing_count("device_id")
     customers["shared_payment_count"] = _sharing_count("payment_fingerprint")
     customers["shared_address_count"] = _sharing_count("shipping_address_id")
-
+    customers["shared_ip_count"] = _sharing_count("home_ip")
     # union graph across all three identity attributes
     G = nx.Graph()
     G.add_nodes_from(customers["customer_id"])
-    for col in ["device_id", "payment_fingerprint", "shipping_address_id"]:
+    for col in ["device_id", "payment_fingerprint", "shipping_address_id", "home_ip"]:
         for _, g in customers.groupby(col):
             ids = g["customer_id"].tolist()
             if len(ids) > 1:
@@ -115,7 +115,7 @@ def build_network_features(customers: pd.DataFrame) -> pd.DataFrame:
 
     return customers[[
         "customer_id", "shared_device_count", "shared_payment_count",
-        "shared_address_count", "identity_cluster_size",
+        "shared_address_count", "shared_ip_count", "identity_cluster_size",
     ]]
 
 
