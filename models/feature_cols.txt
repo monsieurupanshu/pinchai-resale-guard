@@ -9,8 +9,10 @@ avg_discount_pct_when_used
 purchase_span_days
 order_frequency_per_week
 total_spend
+n_distinct_ips
 account_age_at_first_order_days
 shared_device_count
 shared_payment_count
 shared_address_count
+shared_ip_count
 identity_cluster_size
