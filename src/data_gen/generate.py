@@ -426,6 +426,12 @@ def gen_orders_ring_reseller(customers, windows) -> list:
                     orders.append(_make_order(c, sku, qty, ts, price, discount_pct))
     return orders
 
+def _order_ip(customer: Customer) -> str:
+    """VPN users get a fresh IP on every order (rotation). Everyone else
+    consistently uses their home_ip."""
+    if customer.uses_vpn:
+        return _new_ip()
+    return customer.home_ip
 
 def _make_order(customer: Customer, sku: dict, qty: int, ts: datetime, unit_price: float, discount_pct: float) -> dict:
     return {
@@ -440,6 +446,7 @@ def _make_order(customer: Customer, sku: dict, qty: int, ts: datetime, unit_pric
         "device_id": customer.device_id,
         "payment_fingerprint": customer.payment_fingerprint,
         "shipping_address_id": customer.shipping_address_id,
+        "ip_address": _order_ip(customer),
     }
 
 
