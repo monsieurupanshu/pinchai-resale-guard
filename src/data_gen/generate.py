@@ -249,6 +249,7 @@ def gen_ring_resellers(n_rings: int, accounts_per_ring=(2, 6)) -> list:
         shared_address = _new_id("ADDR")
         sharing_mode = random.choice(["device_and_address", "payment_and_address", "address_only"])
         ring_style = "aggressive" if random.random() < 0.70 else "stealth"
+        ring_uses_vpn = random.random() < 0.40
 
         if ring_style == "aggressive":
             burst_start = _rand_ts(SIM_START, SIM_START + timedelta(days=170))
@@ -272,6 +273,8 @@ def gen_ring_resellers(n_rings: int, accounts_per_ring=(2, 6)) -> list:
                 segment="ring_reseller",
                 ring_id=ring_id,
                 ring_style=ring_style,
+                home_ip=_new_ip(),
+                uses_vpn=ring_uses_vpn,
             ))
     return customers
 
