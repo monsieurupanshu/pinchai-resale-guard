@@ -189,6 +189,7 @@ def gen_shared_address_legit(n_households: int, people_per_household=(2, 4)) -> 
                 payment_fingerprint=_new_id("PAY"), # NOT shared
                 shipping_address_id=shared_address,  # shared — the confound
                 segment="shared_address_legit",
+                home_ip=_new_ip(),
             ))
     return customers
 
