@@ -140,6 +140,7 @@ def gen_loyal_bulk_buyers(n: int) -> list:
             payment_fingerprint=_new_id("PAY"),
             shipping_address_id=_new_id("ADDR"),
             segment="loyal_bulk",
+            home_ip=_new_ip(),
         ))
     return customers
 
