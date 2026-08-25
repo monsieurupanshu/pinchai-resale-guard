@@ -62,6 +62,7 @@ def build_purchase_features(orders: pd.DataFrame) -> pd.DataFrame:
             "purchase_span_days": span_days,
             "order_frequency_per_week": (n_orders / max(span_days, 1)) * 7,
             "total_spend": (g["quantity"] * g["unit_price_paid"]).sum(),
+            "n_distinct_ips": g["ip_address"].nunique(),
         })
     return pd.DataFrame(rows)
 
