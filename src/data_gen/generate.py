@@ -247,9 +247,10 @@ def gen_ring_resellers(n_rings: int, accounts_per_ring=(2, 6)) -> list:
         shared_device = _new_id("DEV")
         shared_payment = _new_id("PAY")
         shared_address = _new_id("ADDR")
-        sharing_mode = random.choice(["device_and_address", "payment_and_address", "address_only"])
+        shared_ip = _new_ip()
+        sharing_mode = random.choice(["device_and_address", "payment_and_address", "address_only", "ip_and_address"])
         ring_style = "aggressive" if random.random() < 0.70 else "stealth"
-        ring_uses_vpn = random.random() < 0.40
+        ring_uses_vpn = random.random() < 0.40 if sharing_mode != "ip_and_address" else False
 
         if ring_style == "aggressive":
             burst_start = _rand_ts(SIM_START, SIM_START + timedelta(days=170))
@@ -264,6 +265,7 @@ def gen_ring_resellers(n_rings: int, accounts_per_ring=(2, 6)) -> list:
             created = account_ts_fn()
             device = shared_device if sharing_mode in ("device_and_address",) else _new_id("DEV")
             payment = shared_payment if sharing_mode in ("payment_and_address",) else _new_id("PAY")
+            ip = shared_ip if sharing_mode == "ip_and_address" else _new_ip()
             customers.append(Customer(
                 customer_id=_new_id("CUST"),
                 account_created=created,
@@ -273,7 +275,7 @@ def gen_ring_resellers(n_rings: int, accounts_per_ring=(2, 6)) -> list:
                 segment="ring_reseller",
                 ring_id=ring_id,
                 ring_style=ring_style,
-                home_ip=_new_ip(),
+                home_ip= ip,
                 uses_vpn=ring_uses_vpn,
             ))
     return customers
