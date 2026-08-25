@@ -112,7 +112,8 @@ def gen_normal_shoppers(n: int) -> list:
             payment_fingerprint=_new_id("PAY"),
             shipping_address_id=_new_id("ADDR"),
             segment="normal",
-        ))
+            home_ip=_new_ip(),
+        )) 
     return customers
 
 
