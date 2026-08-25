@@ -159,6 +159,7 @@ def gen_solo_resellers(n: int) -> list:
             created = _rand_ts(SIM_START - timedelta(days=60), SIM_START + timedelta(days=150))
         else:
             created = _rand_ts(SIM_START - timedelta(days=650), SIM_START - timedelta(days=180))
+        uses_vpn = random.random() < 0.40
         customers.append(Customer(
             customer_id=_new_id("CUST"),
             account_created=created,
@@ -166,6 +167,8 @@ def gen_solo_resellers(n: int) -> list:
             payment_fingerprint=_new_id("PAY"),
             shipping_address_id=_new_id("ADDR"),
             segment="solo_reseller",
+            home_ip=_new_ip(),
+            uses_vpn=uses_vpn,
         ))
     return customers
 
