@@ -67,6 +67,12 @@ def generate_reason_codes(row: pd.Series, score: float, action: str) -> list:
 
     if row["sku_concentration"] >= 0.85:
         reasons.append(f"Purchases concentrated on very few SKUs (concentration {row['sku_concentration']:.2f})")
+        
+    if row["n_distinct_ips"] >= 4:
+        reasons.append(f"Orders placed from {int(row['n_distinct_ips'])} different IP addresses — possible VPN/proxy use")
+        
+    if row["shared_ip_count"] >= 1:
+        reasons.append(f"Shares a home IP address with {int(row['shared_ip_count'])} other account(s)")
 
     if row["account_age_at_first_order_days"] < 30 and row["avg_qty_per_order"] >= 3:
         reasons.append(f"New account ({row['account_age_at_first_order_days']:.0f} days old) with bulk buying")
