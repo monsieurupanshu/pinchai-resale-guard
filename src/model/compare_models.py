@@ -89,6 +89,25 @@ def main():
 
     winner = results_df["Evasive Recall"].idxmax()
     print(f"\nWinner by evasive-case recall: {winner}")
+    
+    os.makedirs(IMG_DIR, exist_ok=True)
+    fig, ax = plt.subplots(figsize=(10, 5))
+    metrics = ["PR-AUC", "Evasive Recall", "Legit FP Rate"]
+    x = np.arange(len(results_df))
+    width = 0.25
+    colors = ["#2a78d6", "#1baf7a", "#e34948"]
+    for i, metric in enumerate(metrics):
+        ax.bar(x + i * width, results_df[metric], width, label=metric, color=colors[i])
+    ax.set_xticks(x + width)
+    ax.set_xticklabels(results_df.index, rotation=15, ha="right")
+    ax.set_ylabel("Score")
+    ax.set_title("Model Comparison — PR-AUC, Evasive Recall, Legit False-Positive Rate")
+    ax.legend()
+    ax.grid(axis="y", alpha=0.3)
+    fig.tight_layout()
+    chart_path = os.path.join(IMG_DIR, "model_comparison.png")
+    fig.savefig(chart_path, dpi=150)
+    print(f"\nSaved chart to {chart_path}")
 
 
 if __name__ == "__main__":
