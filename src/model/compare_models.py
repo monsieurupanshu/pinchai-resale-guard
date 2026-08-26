@@ -1,6 +1,8 @@
 import os
 
 import lightgbm as lgb
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
@@ -9,6 +11,8 @@ from sklearn.preprocessing import StandardScaler
 
 DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data"))
 MODEL_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "models"))
+DOCS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "docs"))
+IMG_DIR = os.path.join(DOCS_DIR, "images")
 LABEL_COLS = ["customer_id", "segment", "is_reseller", "is_loyal_bulk"]
 THRESHOLD = 0.5
 
