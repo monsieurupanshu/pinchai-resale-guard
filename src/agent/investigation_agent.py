@@ -73,3 +73,29 @@ def get_cluster_orders(customer_ids: list) -> dict:
         "total_spend": float((cluster_orders["quantity"] * cluster_orders["unit_price_paid"]).sum()),
         "distinct_skus": cluster_orders["sku_id"].nunique(),
     }
+    
+def simulate_policy(new_threshold: float, action_name: str = "BLOCK") -> dict:
+    """Tool 5: 'what if' analysis — if we changed a policy threshold,
+    how many test-set customers would move into a given action?
+    Read-only simulation, does not change any real policy."""
+    import lightgbm as lgb
+
+    MODEL_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "models"))
+    model = lgb.Booster(model_file=os.path.join(MODEL_DIR, "reseller_model.txt"))
+    with open(os.path.join(MODEL_DIR, "feature_cols.txt")) as f:
+        feature_cols = f.read().splitlines()
+
+    test_df = pd.read_csv(os.path.join(DATA_DIR, "test_split.csv"))
+    scores = model.predict(test_df[feature_cols])
+    test_df["score"] = scores
+
+    current_count = (test_df["score"] >= 0.85).sum()  # current BLOCK threshold
+    new_count = (test_df["score"] >= new_threshold).sum()
+
+    return {
+        "current_threshold": 0.85,
+        "current_customers_at_or_above": int(current_count),
+        "simulated_threshold": new_threshold,
+        "simulated_customers_at_or_above": int(new_count),
+        "change": int(new_count - current_count),
+    }
