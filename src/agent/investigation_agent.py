@@ -42,3 +42,19 @@ def get_network_cluster(customer_id: str) -> dict:
         "shared_payment": bool((linked["payment_fingerprint"] == target["payment_fingerprint"]).any()),
         "shared_ip": bool((linked["home_ip"] == target["home_ip"]).any()),
     }
+    
+def get_policy_decision(customer_id: str) -> dict:
+    """Tool 3: get the actual score/action/reasons from the policy engine
+    for this customer."""
+    import sys
+    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+    from src.policy.engine import PolicyEngine
+
+    df = pd.read_csv(os.path.join(DATA_DIR, "features.csv"))
+    row = df[df["customer_id"] == customer_id]
+    if row.empty:
+        return {"error": f"Customer {customer_id} not found"}
+
+    engine = PolicyEngine()
+    decision = engine.decide(row.iloc[0])
+    return decision
