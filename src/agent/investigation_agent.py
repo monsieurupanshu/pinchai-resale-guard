@@ -58,3 +58,18 @@ def get_policy_decision(customer_id: str) -> dict:
     engine = PolicyEngine()
     decision = engine.decide(row.iloc[0])
     return decision
+
+def get_cluster_orders(customer_ids: list) -> dict:
+    """Tool 4: pull combined order history across a set of linked accounts
+    — shows the TRUE combined volume a ring is moving, which no single
+    account's view would reveal."""
+    orders = pd.read_csv(os.path.join(DATA_DIR, "orders.csv"))
+    cluster_orders = orders[orders["customer_id"].isin(customer_ids)]
+
+    return {
+        "accounts_in_cluster": len(customer_ids),
+        "total_orders": len(cluster_orders),
+        "total_quantity": int(cluster_orders["quantity"].sum()),
+        "total_spend": float((cluster_orders["quantity"] * cluster_orders["unit_price_paid"]).sum()),
+        "distinct_skus": cluster_orders["sku_id"].nunique(),
+    }
