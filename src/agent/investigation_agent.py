@@ -164,3 +164,60 @@ TOOLS_SCHEMA = [
         },
     },
 ]
+
+TOOL_FUNCTIONS = {
+    "get_customer_features": get_customer_features,
+    "get_network_cluster": get_network_cluster,
+    "get_policy_decision": get_policy_decision,
+    "get_cluster_orders": get_cluster_orders,
+    "simulate_policy": simulate_policy,
+}
+
+SYSTEM_PROMPT = """You are an investigation assistant for a fraud-ops reviewer
+at an e-commerce retailer. You have READ-ONLY tools to look up customer data,
+network connections, and policy decisions. You can also SIMULATE policy
+changes. You must NEVER claim to make or change an actual decision — you only
+investigate and report facts. The real policy engine (via get_policy_decision)
+is the sole source of truth for any action taken. Be concise and factual."""
+
+
+def ask_agent(question: str, max_turns: int = 5) -> str:
+    """The core agentic loop: send the question + tool descriptions to the
+    LLM, let it decide which tools to call, run them, feed results back,
+    repeat until it has a final answer (or max_turns is reached)."""
+    client = Groq(api_key=os.environ["GROQ_API_KEY"])
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": question},
+    ]
+
+    for _ in range(max_turns):
+        response = client.chat.completions.create(
+            model=MODEL_NAME,
+            messages=messages,
+            tools=TOOLS_SCHEMA,
+        )
+        msg = response.choices[0].message
+
+        if not msg.tool_calls:
+            return msg.content
+
+        messages.append(msg)
+        for tool_call in msg.tool_calls:
+            fn_name = tool_call.function.name
+            fn_args = json.loads(tool_call.function.arguments)
+            print(f"  [agent called: {fn_name}({fn_args})]")
+            result = TOOL_FUNCTIONS[fn_name](**fn_args)
+            messages.append({
+                "role": "tool",
+                "tool_call_id": tool_call.id,
+                "content": json.dumps(result),
+            })
+
+    return "Reached max turns without a final answer."
+
+
+if __name__ == "__main__":
+    q = input("Ask the investigation agent a question: ")
+    answer = ask_agent(q)
+    print("\n" + answer)
