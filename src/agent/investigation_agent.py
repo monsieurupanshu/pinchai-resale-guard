@@ -99,3 +99,68 @@ def simulate_policy(new_threshold: float, action_name: str = "BLOCK") -> dict:
         "simulated_customers_at_or_above": int(new_count),
         "change": int(new_count - current_count),
     }
+    
+TOOLS_SCHEMA = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_customer_features",
+            "description": "Get a customer's full behavioral signal profile (quantity, timing, SKU concentration, account age, etc.)",
+            "parameters": {
+                "type": "object",
+                "properties": {"customer_id": {"type": "string"}},
+                "required": ["customer_id"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_network_cluster",
+            "description": "Find other accounts linked to this customer via shared device, payment, address, or IP",
+            "parameters": {
+                "type": "object",
+                "properties": {"customer_id": {"type": "string"}},
+                "required": ["customer_id"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_policy_decision",
+            "description": "Get the actual risk score, action (ALLOW/FLAG/LIMIT_QTY/BLOCK), and reasons for a customer from the real policy engine",
+            "parameters": {
+                "type": "object",
+                "properties": {"customer_id": {"type": "string"}},
+                "required": ["customer_id"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_cluster_orders",
+            "description": "Get combined order volume across a list of linked customer IDs — shows true ring-level activity",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "customer_ids": {"type": "array", "items": {"type": "string"}}
+                },
+                "required": ["customer_ids"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "simulate_policy",
+            "description": "Simulate how many customers would be affected if the BLOCK threshold were changed. Does not change any real policy.",
+            "parameters": {
+                "type": "object",
+                "properties": {"new_threshold": {"type": "number"}},
+                "required": ["new_threshold"],
+            },
+        },
+    },
+]
