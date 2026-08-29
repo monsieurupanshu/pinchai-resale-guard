@@ -1,11 +1,22 @@
 import json
 import os
-
 import pandas as pd
 from groq import Groq
+from src.agent.case_retrieval import build_case_corpus, build_search_index, hybrid_search
 
 DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data"))
 MODEL_NAME = "openai/gpt-oss-20b"
+
+_SEARCH_INDEX = None  # built once, lazily, on first use
+
+
+def _get_search_index():
+    global _SEARCH_INDEX
+    if _SEARCH_INDEX is None:
+        print("  [building case search index, one-time setup...]")
+        corpus = build_case_corpus()
+        _SEARCH_INDEX = build_search_index(corpus)
+    return _SEARCH_INDEX
 
 
 def get_customer_features(customer_id: str) -> dict:
