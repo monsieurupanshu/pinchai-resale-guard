@@ -2,7 +2,8 @@ import os
 
 import pandas as pd
 from rank_bm25 import BM25Okapi
-from sentence_transformers import SentenceTransformer, util
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data"))
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
