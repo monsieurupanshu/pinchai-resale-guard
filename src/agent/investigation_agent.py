@@ -184,6 +184,18 @@ TOOLS_SCHEMA = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "find_similar_cases",
+            "description": "Search past case decisions for similar patterns using hybrid retrieval. Use this to answer 'have we seen this before' questions.",
+            "parameters": {
+                "type": "object",
+                "properties": {"query": {"type": "string"}},
+                "required": ["query"],
+            },
+        },
+    },
 ]
 
 TOOL_FUNCTIONS = {
@@ -192,6 +204,7 @@ TOOL_FUNCTIONS = {
     "get_policy_decision": get_policy_decision,
     "get_cluster_orders": get_cluster_orders,
     "simulate_policy": simulate_policy,
+    "find_similar_cases": find_similar_cases,
 }
 
 SYSTEM_PROMPT = """You are an investigation assistant for a fraud-ops reviewer
