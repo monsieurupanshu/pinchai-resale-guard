@@ -122,6 +122,7 @@ def main():
         else:
             with st.spinner("Investigating..."):
                 try:
+                    contextualized_question = f"[Currently viewing customer: {customer_id}] {agent_question}"   
                     answer = ask_agent(agent_question)
                     st.success(answer)
                 except Exception as e:
