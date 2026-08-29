@@ -216,7 +216,16 @@ at an e-commerce retailer. You have READ-ONLY tools to look up customer data,
 network connections, and policy decisions. You can also SIMULATE policy
 changes. You must NEVER claim to make or change an actual decision — you only
 investigate and report facts. The real policy engine (via get_policy_decision)
-is the sole source of truth for any action taken. Be concise and factual."""
+is the sole source of truth for any action taken.
+
+IMPORTANT: get_policy_decision returns an 'action' field (ALLOW, FLAG,
+LIMIT_QTY, or BLOCK) and a 'reasons' field. The 'reasons' are contributing
+observations, NOT proof of wrongdoing — a customer with action=ALLOW was
+NOT flagged, even if the reasons list mentions a signal like elevated
+quantity. Always state the actual 'action' value explicitly and accurately;
+never imply a customer was flagged/blocked if action=ALLOW.
+
+Be concise and factual."""
 
 
 def ask_agent(question: str, max_turns: int = 5) -> str:
