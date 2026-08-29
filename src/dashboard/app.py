@@ -17,6 +17,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..",
 
 from src.policy.engine import PolicyEngine
 from src.dashboard.logic import compute_trust_score, generate_trust_signals, generate_narrative
+from src.agent.investigation_agent import ask_agent
 
 st.set_page_config(page_title="Resale-Guard", page_icon="🛡️", layout="wide")
 
@@ -105,6 +106,26 @@ def main():
     feature_cols = [c for c in df.columns if c not in ("customer_id", "segment", "is_reseller", "is_loyal_bulk", "ring_id")]
     display_df = row[feature_cols].to_frame().T
     st.dataframe(display_df, use_container_width=True, hide_index=True)
+    
+    st.divider()
+    st.subheader("🕵️ Ask the Investigation Agent")
+    st.caption("Free-form questions — the agent can look up customers, check for linked accounts, "
+               "search past cases, and simulate policy changes. Advisory only — it never makes decisions itself.")
+
+    agent_question = st.text_input(
+        "Ask a question",
+        placeholder=f"e.g. Why was {customer_id} flagged, and is this part of a bigger ring?",
+    )
+    if st.button("Ask") and agent_question:
+        if not os.environ.get("GROQ_API_KEY"):
+            st.error("GROQ_API_KEY environment variable not set. The agent needs this to run.")
+        else:
+            with st.spinner("Investigating..."):
+                try:
+                    answer = ask_agent(agent_question)
+                    st.success(answer)
+                except Exception as e:
+                    st.error(f"Agent error: {e}")
 
     with st.expander("Ground truth (demo only — not available to a real reviewer)"):
         st.write(f"Actual segment: `{row['segment']}`")
