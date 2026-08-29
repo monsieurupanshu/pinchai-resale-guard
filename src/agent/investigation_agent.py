@@ -111,6 +111,16 @@ def simulate_policy(new_threshold: float, action_name: str = "BLOCK") -> dict:
         "change": int(new_count - current_count),
     }
     
+def find_similar_cases(query: str) -> dict:
+    """Tool 6: hybrid search (BM25 + TF-IDF + RRF) over past case
+    decisions — answers 'have we seen this pattern before?'"""
+    index = _get_search_index()
+    results = hybrid_search(query, index, top_k=3)
+    return {
+        "query": query,
+        "similar_cases": results[["customer_id", "action", "score", "narrative"]].to_dict("records"),
+    }
+    
 TOOLS_SCHEMA = [
     {
         "type": "function",
