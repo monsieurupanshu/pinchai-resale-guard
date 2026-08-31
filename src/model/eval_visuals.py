@@ -19,3 +19,28 @@ def load_predictions():
     test_df["score"] = model.predict(test_df[feature_cols])
     test_df["pred"] = (test_df["score"] >= 0.5).astype(int)
     return test_df
+
+def plot_confusion_matrix(test_df):
+    cm = confusion_matrix(test_df["is_reseller"], test_df["pred"])
+    fig, ax = plt.subplots(figsize=(5, 4.5))
+    im = ax.imshow(cm, cmap="Blues")
+
+    labels = ["Legit", "Reseller"]
+    ax.set_xticks([0, 1])
+    ax.set_yticks([0, 1])
+    ax.set_xticklabels(labels)
+    ax.set_yticklabels(labels)
+    ax.set_xlabel("Predicted")
+    ax.set_ylabel("Actual")
+    ax.set_title("Confusion Matrix (test set, threshold=0.5)")
+
+    for i in range(2):
+        for j in range(2):
+            ax.text(j, i, str(cm[i, j]), ha="center", va="center",
+                     color="white" if cm[i, j] > cm.max() / 2 else "black", fontsize=14)
+
+    fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+    fig.tight_layout()
+    fig.savefig(os.path.join(IMG_DIR, "confusion_matrix.png"), dpi=150)
+    plt.close(fig)
+    print("Saved docs/images/confusion_matrix.png")
