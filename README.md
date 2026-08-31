@@ -25,6 +25,10 @@ challenges, not just the easy case.
 
 ---
 
+![Dashboard Screenshot](docs/images/dashboard_screenshot.png)
+
+*The reviewer console — a real customer's risk score, decision, and reasons, at a glance.*
+
 ## 1. Does the Data Actually Make This Hard?
 
 Before training anything, the six types of customers in this project
@@ -122,6 +126,11 @@ sitting close to 0 instead of near a boundary, meaning they weren't
 Instead of just showing a score, this project includes a chat-style
 assistant a reviewer can ask questions like *"is this part of a bigger
 ring?"* — and it goes and checks, using real tools, not guesswork.
+
+![Dashboard Demo](docs/images/dashboard_demo.gif)
+
+*A quick walkthrough: selecting a customer, seeing the risk decision, and asking the investigation agent whether it's part of a bigger ring.*
+
 
 ```mermaid
 flowchart TD
