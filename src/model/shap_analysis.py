@@ -65,3 +65,19 @@ def plot_customer_waterfall(explainer, shap_values, X_test, test_df, customer_id
     plt.savefig(os.path.join(IMG_DIR, f"shap_waterfall_{safe_name}.png"), dpi=150, bbox_inches="tight")
     plt.close()
     print(f"Saved docs/images/shap_waterfall_{safe_name}.png")
+    
+if __name__ == "__main__":
+    os.makedirs(IMG_DIR, exist_ok=True)
+    model, feature_cols, test_df = load_model_and_data()
+
+    print("Computing SHAP values (this may take a moment)...")
+    explainer, shap_values, X_test = compute_shap_values(model, feature_cols, test_df)
+
+    plot_global_summary(shap_values, X_test)
+
+    # pick one interesting customer per key segment for waterfall plots
+    for segment in ["ring_reseller", "stealth_reseller", "loyal_bulk"]:
+        sample = test_df[test_df["segment"] == segment]
+        if len(sample) > 0:
+            customer_id = sample.iloc[0]["customer_id"]
+            plot_customer_waterfall(explainer, shap_values, X_test, test_df, customer_id)
