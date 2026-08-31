@@ -61,6 +61,30 @@ Defined before building, not retrofitted after:
   static synthetic snapshot. A "what I'd do at scale" note covers this in
   the final docs, but no retraining pipeline is built.
 
+## 4a. Empirical Proof — Why the Hard Pairs Are Genuinely Hard
+
+The archetype design below claims two pairs are deliberately close in
+feature space. This isn't asserted — it's measured, from the actual
+generated data:
+
+![Archetype Comparison](images/archetype_comparison.png)
+
+**`ring_reseller` vs `shared_address_legit`** — both show
+`identity_cluster_size` in the 3-4.6 range, meaning the network signal
+*alone* cannot separate them. What actually splits them: discount-window
+timing (57% vs 0%) and account age (87 vs 256 days).
+
+**`stealth_reseller` vs `loyal_bulk`** — both sit near 0% discount-window
+timing, meaning the most obvious evasion-detection signal *alone* cannot
+separate them. What actually splits them: SKU concentration (0.69 vs
+0.53) and account age (134 vs 404 days).
+
+This is the direct empirical basis for the model needing to learn
+feature *combinations* rather than any single threshold rule — confirmed
+later by the SHAP analysis (`docs/06_shap_analysis.md`), which shows the
+model relying on exactly these combinations, including a genuine
+non-linear interaction on `max_qty_single_order`.
+
 ## 5. The Core Assumption Worth Naming
 
 Everything downstream assumes the 6-archetype synthetic data is a fair proxy
