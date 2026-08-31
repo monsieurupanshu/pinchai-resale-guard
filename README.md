@@ -8,8 +8,8 @@ sales — including the ones who spread purchases over weeks, split volume
 across fake accounts, or hide behind a VPN — while correctly leaving genuine
 bulk buyers alone. Every decision comes with a plain-English reason, not just
 a score. On top of it, an AI investigation agent lets a reviewer just *ask* —
-"is this part of a bigger ring?" — and get a real, evidence-backed answer,
-checked against live data, not a guess.
+"is this part of a bigger ring?" — and get a real answer, grounded in the
+actual data and the real policy engine's decision, not invented.
 
 ---
 
