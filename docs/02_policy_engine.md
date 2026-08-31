@@ -55,6 +55,23 @@ trade-off:
   would be tuned against the actual cost of a review vs. the cost of a
   missed ring — a business decision, not a purely technical one.
 
+## Visual: Real Scores vs. Threshold Zones
+
+![Threshold Zones](images/threshold_zones.png)
+
+Every test-set customer's actual score, plotted against the 4 action
+zones. This makes the scale of the errors visible, not just their count:
+
+- The 3 `ring_reseller` misses (see `docs/01_model_eval.md`) aren't
+  borderline — they sit near 0.02-0.15, deep in ALLOW territory, not
+  just barely under the FLAG threshold. These are genuinely
+  hard-to-detect small stealth rings, not marginal cases.
+- The 3 `loyal_bulk` false positives spread across FLAG, LIMIT_QTY, and
+  BLOCK — showing the cost of the error isn't uniform; one customer
+  gets a mild FLAG, another gets fully BLOCKed.
+- `solo_reseller` sits in a tight cluster at 1.0 with zero exceptions —
+  visual confirmation this is the easiest case type to catch.
+
 ## Full Action Distribution (test set, n=460)
 
 | Segment | n | ALLOW | FLAG | LIMIT_QTY | BLOCK |
