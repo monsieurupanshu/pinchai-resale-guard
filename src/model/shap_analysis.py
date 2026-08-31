@@ -16,3 +16,13 @@ def load_model_and_data():
         feature_cols = f.read().splitlines()
     test_df = pd.read_csv(os.path.join(DATA_DIR, "test_split.csv"))
     return model, feature_cols, test_df
+
+def compute_shap_values(model, feature_cols, test_df):
+    """TreeExplainer is exact (not approximated) for tree-based models
+    like LightGBM — it computes true Shapley values efficiently by
+    exploiting the tree structure, rather than the sampling-based
+    approximation SHAP uses for arbitrary black-box models."""
+    explainer = shap.TreeExplainer(model)
+    X_test = test_df[feature_cols]
+    shap_values = explainer.shap_values(X_test)
+    return explainer, shap_values, X_test
