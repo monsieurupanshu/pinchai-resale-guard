@@ -8,7 +8,7 @@ caught at checkout, before the item even ships.**
 ## The Problem, Simply
 
 Retailers run flash sales. Some people buy 20 pairs of the same
-discounted shoe — not to wear, but to resell on eBay/StockX at double
+discounted shoe — not to wear, but to resell on E-commerce at double
 the price. Nothing about the purchase is technically against the rules,
 so normal fraud systems miss it completely. The cost: lost margin,
 fake "sold out" signals, and real customers losing out on stock.
@@ -231,6 +231,70 @@ src/
 docs/             write-ups, diagrams, results
 data/             generated data files (not stored in git — regenerate with the scripts above)
 ```
+
+## Caveats and Way Forward
+
+Being upfront about what this project doesn't cover yet, rather than
+letting the results speak for more than they actually prove.
+
+**What's genuinely tested vs. what's assumed:**
+- Everything above ran on **synthetic data** (~2,400 customers). The
+  patterns were designed to be realistic and deliberately hard to
+  separate, but no amount of careful design replaces real transaction
+  data. Treat the specific numbers (97.6%, AP=0.998) as a proof of
+  approach, not a production guarantee.
+- VPN evasion was tested for real — but only one evasion tactic. A
+  determined adversary combining several evasion techniques at once
+  (VPN *and* address rotation *and* purposely-random timing) hasn't
+  been tried.
+- The known weak spot found in testing — **small, patient reseller
+  rings** (3-4 coordinated accounts, spread-out timing) — is a real gap,
+  not a hypothetical one. A production system would need either a
+  lower threshold for any nonzero shared-identity signal, or a separate
+  review tier for small clusters.
+
+  **Model choice wasn't exhaustively tested.** XGBoost was part of the
+  original plan but couldn't be installed on this machine due to an
+  environment conflict, so the comparison covers 3 models, not 4. None
+  of the 3 had real hyperparameter tuning — the comparison shows
+  architecture differences, not each model's best possible performance.
+  Results also come from a single train/test split, not cross-validation,
+  so the exact numbers could shift somewhat on a different split. And
+  the 3 models landed close enough together that "LightGBM wins" is
+  somewhat sensitive to which metric matters most to you.
+
+**Scale and infrastructure not addressed:**
+- No real-time/latency testing — this runs as a batch script, not a
+  live checkout-time API with a response-time budget.
+- No cross-retailer identity resolution — a real deployment serving
+  multiple retailers would need a privacy-preserving way to share risk
+  signals without sharing raw customer data.
+- No drift monitoring or retraining pipeline — the model was trained
+  once. Real reseller tactics would shift over time, and a production
+  system needs a way to notice that and retrain.
+
+**Two deliberate technical trade-offs, made under real constraints:**
+- The investigation agent's retrieval uses TF-IDF, not neural
+  embeddings — a dependency conflict with the local environment forced
+  this choice partway through. TF-IDF is a real, working retrieval
+  method, just less semantically flexible than embeddings would be
+  (it won't catch synonyms the way embeddings can).
+- The agent runs on a smaller, free, open-source model (20B parameters
+  via Groq) rather than a larger commercial one. This mostly worked
+  well, but one real calibration issue was caught and fixed during
+  testing — a reminder that smaller models need their instructions
+  spelled out more explicitly, and their answers need to be spot-checked
+  against ground truth, not just trusted because they read fluently.
+
+**If this were to continue:**
+1. Replace synthetic data with a real (anonymized) transaction sample,
+   even a small one, to see how much of this actually holds up
+2. Build the specific fix for the small-ring weak spot found in testing
+3. Add a proper backtesting/A-B framework instead of a single train/test split
+4. Try upgrading the agent's retrieval to real embeddings once a clean
+   environment is available
+5. Add write-capable agent actions behind a human-approval step, rather
+   than staying strictly read-only
 
 ## A Note on This Project
 
