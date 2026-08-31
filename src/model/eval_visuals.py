@@ -62,3 +62,38 @@ def plot_pr_curve(test_df):
     fig.savefig(os.path.join(IMG_DIR, "pr_curve.png"), dpi=150)
     plt.close(fig)
     print("Saved docs/images/pr_curve.png")
+    
+def plot_segment_scores(test_df):
+    """This is the chart that matters most for this project specifically:
+    shows the model's score distribution PER SEGMENT, not just aggregate
+    metrics. Proves visually that legit segments cluster near 0 and
+    reseller segments cluster near 1, including the two hard pairs."""
+    segments = ["normal", "loyal_bulk", "shared_address_legit",
+                "solo_reseller", "stealth_reseller", "ring_reseller"]
+    colors = ["#2a78d6", "#1baf7a", "#199e70", "#e34948", "#eb6834", "#d03b3b"]
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    data = [test_df[test_df["segment"] == seg]["score"].values for seg in segments]
+    bp = ax.boxplot(data, labels=segments, patch_artist=True, showfliers=True)
+    for patch, color in zip(bp["boxes"], colors):
+        patch.set_facecolor(color)
+        patch.set_alpha(0.7)
+
+    ax.axhline(0.5, color="gray", linestyle="--", alpha=0.5, label="Decision threshold (0.5)")
+    ax.set_ylabel("Model Score")
+    ax.set_title("Score Distribution by Segment (test set)")
+    ax.legend()
+    ax.grid(axis="y", alpha=0.3)
+    plt.xticks(rotation=25, ha="right")
+    fig.tight_layout()
+    fig.savefig(os.path.join(IMG_DIR, "segment_score_distribution.png"), dpi=150)
+    plt.close(fig)
+    print("Saved docs/images/segment_score_distribution.png")
+
+
+if __name__ == "__main__":
+    os.makedirs(IMG_DIR, exist_ok=True)
+    test_df = load_predictions()
+    plot_confusion_matrix(test_df)
+    plot_pr_curve(test_df)
+    plot_segment_scores(test_df)
