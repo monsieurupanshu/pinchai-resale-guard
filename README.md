@@ -1,6 +1,6 @@
 # Resale-Guard
 
-**Checkout-time detection of discount-arbitrage resellers** — extending PinchAI's
+**Checkout-time detection of discount-arbitrage resellers** ~ extending PinchAI's
 post-purchase buyer-intent thesis one step earlier, to the moment of purchase.
 
 ---
