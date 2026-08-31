@@ -44,3 +44,21 @@ def plot_confusion_matrix(test_df):
     fig.savefig(os.path.join(IMG_DIR, "confusion_matrix.png"), dpi=150)
     plt.close(fig)
     print("Saved docs/images/confusion_matrix.png")
+    
+def plot_pr_curve(test_df):
+    precision, recall, _ = precision_recall_curve(test_df["is_reseller"], test_df["score"])
+    ap = average_precision_score(test_df["is_reseller"], test_df["score"])
+
+    fig, ax = plt.subplots(figsize=(6, 5))
+    ax.plot(recall, precision, color="#2a78d6", linewidth=2)
+    ax.fill_between(recall, precision, alpha=0.15, color="#2a78d6")
+    ax.set_xlabel("Recall")
+    ax.set_ylabel("Precision")
+    ax.set_title(f"Precision-Recall Curve (AP = {ap:.3f})")
+    ax.set_xlim([0, 1.02])
+    ax.set_ylim([0, 1.02])
+    ax.grid(alpha=0.3)
+    fig.tight_layout()
+    fig.savefig(os.path.join(IMG_DIR, "pr_curve.png"), dpi=150)
+    plt.close(fig)
+    print("Saved docs/images/pr_curve.png")
