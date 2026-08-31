@@ -53,6 +53,24 @@ genuinely can't tell them apart with that signal alone. Same story for
 of *when* they buy. Real detection needs more than one signal.
 *(Deeper dive: `docs/00_problem_framing.md`)*
 
+## How It Works
+
+```mermaid
+flowchart LR
+    A[Synthetic Data] --> B[Features] --> C[LightGBM Model] --> D[Policy Engine] --> E[Dashboard]
+    C -.benchmarked.-> F[Model Comparison]
+    C --> S[SHAP Analysis]
+    D --> G[Investigation Agent]
+    H[Hybrid RAG] --> G
+    G --> E
+```
+
+Raw purchase data becomes 18 signals, the model scores each customer,
+the policy engine turns that score into an actual decision, and
+everything shows up in one dashboard — with an AI agent standing by to
+answer follow-up questions. Full diagrams (including the tool-by-tool
+agent breakdown): `docs/05_architecture.md`.
+
 ## 2. How Well Does the Model Actually Perform?
 
 ![Confusion Matrix](docs/images/confusion_matrix.png)
